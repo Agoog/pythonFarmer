@@ -82,59 +82,96 @@ def get_dinosaur_bone_dfs():
 					keyPointDic[mRecordPath] = path_item[mRecordPath]
 					break
 			#记录当前点位路径
-			if curr_x>0:
-				if venue_List[curr_x-1][curr_y] == 0:
+			#向四个方向扩展
+			for direction in [North,South,West,East]:
+				target_x = curr_x
+				target_y = curr_y
+				if direction == West:
+					if curr_x>0:
+						target_x = curr_x-1
+				elif direction == East:
+					if curr_x<get_world_size()-1:
+						target_x = curr_x+1
+				elif direction == North:
+					if curr_y<get_world_size()-1:
+						target_y = curr_y+1
+				elif direction == South:
+					if curr_y>0:
+						target_y = curr_y-1
+				if (target_x != curr_x or target_y != curr_y) and venue_List[target_x][target_y] == 0:
 					keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
-					keyPointDicTemp[mPoint]=(curr_x-1,curr_y)
+					keyPointDicTemp[mPoint]=(target_x,target_y)
 					rePoint = False
 					for recordItem in keyPointDic[mRecordPath]:
 						keyPointDicTemp[mRecordPath].append(recordItem)
-						if recordItem == keyPointDicTemp[mPoint]:
-							rePoint = True
-					keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
-					if not rePoint :
-						bfs_path_list.append(keyPointDicTemp) 
-						bfs_list.append((curr_x-1,curr_y))
-			if curr_x<get_world_size()-1:
-				if venue_List[curr_x+1][curr_y] == 0:
-					keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
-					keyPointDicTemp[mPoint]=(curr_x+1,curr_y)
-					rePoint = False
-					for recordItem in keyPointDic[mRecordPath]:
-						keyPointDicTemp[mRecordPath].append(recordItem)
-						if recordItem == keyPointDicTemp[mPoint]:
+					for bfs_item in bfs_list:
+						if bfs_item == keyPointDicTemp[mPoint]:
 							rePoint = True
 							break
 					keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
 					if not rePoint :
 						bfs_path_list.append(keyPointDicTemp) 
-						bfs_list.append((curr_x+1,curr_y))
-			if curr_y>0:
-				if venue_List[curr_x][curr_y-1] == 0:
-					keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
-					keyPointDicTemp[mPoint]=(curr_x,curr_y-1)
-					rePoint = False
-					for recordItem in keyPointDic[mRecordPath]:
-						keyPointDicTemp[mRecordPath].append(recordItem)
-						if recordItem == keyPointDicTemp[mPoint]:
-							rePoint = True
-					keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
-					if not rePoint :
-						bfs_path_list.append(keyPointDicTemp) 
-						bfs_list.append((curr_x,curr_y-1))					
-			if curr_y<get_world_size()-1:
-				if venue_List[curr_x][curr_y+1] == 0:
-					keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
-					keyPointDicTemp[mPoint]=(curr_x,curr_y+1)
-					rePoint = False
-					for recordItem in keyPointDic[mRecordPath]:
-						keyPointDicTemp[mRecordPath].append(recordItem)
-						if recordItem == keyPointDicTemp[mPoint]:
-							rePoint = True
-					keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
-					if not rePoint :
-						bfs_path_list.append(keyPointDicTemp) 
-						bfs_list.append((curr_x,curr_y+1))
+						bfs_list.append((target_x,target_y))
+			# if curr_x>0:
+			# 	if venue_List[curr_x-1][curr_y] == 0:
+			# 		keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
+			# 		keyPointDicTemp[mPoint]=(curr_x-1,curr_y)
+			# 		rePoint = False
+			# 		for recordItem in keyPointDic[mRecordPath]:
+			# 			keyPointDicTemp[mRecordPath].append(recordItem)
+			# 		for bfs_item in bfs_list:
+			# 			if bfs_item == keyPointDicTemp[mPoint]:
+			# 				rePoint = True
+			# 				break
+			# 		keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
+			# 		if not rePoint :
+			# 			bfs_path_list.append(keyPointDicTemp) 
+			# 			bfs_list.append((curr_x-1,curr_y))
+			# if curr_x<get_world_size()-1:
+			# 	if venue_List[curr_x+1][curr_y] == 0:
+			# 		keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
+			# 		keyPointDicTemp[mPoint]=(curr_x+1,curr_y)
+			# 		rePoint = False
+			# 		for recordItem in keyPointDic[mRecordPath]:
+			# 			keyPointDicTemp[mRecordPath].append(recordItem)
+			# 		for bfs_item in bfs_list:
+			# 			if bfs_item == keyPointDicTemp[mPoint]:
+			# 				rePoint = True
+			# 				break
+			# 		keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
+			# 		if not rePoint :
+			# 			bfs_path_list.append(keyPointDicTemp) 
+			# 			bfs_list.append((curr_x+1,curr_y))
+			# if curr_y>0:
+			# 	if venue_List[curr_x][curr_y-1] == 0:
+			# 		keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
+			# 		keyPointDicTemp[mPoint]=(curr_x,curr_y-1)
+			# 		rePoint = False
+			# 		for recordItem in keyPointDic[mRecordPath]:
+			# 			keyPointDicTemp[mRecordPath].append(recordItem)
+			# 		for bfs_item in bfs_list:
+			# 			if bfs_item == keyPointDicTemp[mPoint]:
+			# 				rePoint = True
+			# 				break
+			# 		keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
+			# 		if not rePoint :
+			# 			bfs_path_list.append(keyPointDicTemp) 
+			# 			bfs_list.append((curr_x,curr_y-1))					
+			# if curr_y<get_world_size()-1:
+			# 	if venue_List[curr_x][curr_y+1] == 0:
+			# 		keyPointDicTemp = {mPoint:(get_pos_x(),get_pos_y()),mRecordPath:[]}
+			# 		keyPointDicTemp[mPoint]=(curr_x,curr_y+1)
+			# 		rePoint = False
+			# 		for recordItem in keyPointDic[mRecordPath]:
+			# 			keyPointDicTemp[mRecordPath].append(recordItem)
+			# 		for bfs_item in bfs_list:
+			# 			if bfs_item == keyPointDicTemp[mPoint]:
+			# 				rePoint = True
+			# 				break
+			# 		keyPointDicTemp[mRecordPath].append(keyPointDicTemp[mPoint])
+			# 		if not rePoint :
+			# 			bfs_path_list.append(keyPointDicTemp) 
+			# 			bfs_list.append((curr_x,curr_y+1))
 		#移动到下一个点位
 		#获取路径
 		for path_item in bfs_path_list:
